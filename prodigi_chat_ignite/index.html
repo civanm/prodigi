@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <style media="screen">
+        ul {
+    list-style: none;
+
+}
+li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #ccc;
+}
+li:nth-child(even) {
+    background-color: #eee;
+}
+input {
+     width: 95%;
+     padding: 10px;
+}
+        </style>
+    </head>
+    <body>
+        <h2>Prodigi chat</h2>
+        <ul id="listMessage">
+
+        </ul>
+        <form id="formChat">
+            <input type="text" id="txtMessage" value="">
+        </form>
+
+        <script src="/socket.io/socket.io.js" charset="utf-8"></script>
+        <script type="text/javascript">
+            var socket = io(),
+                formChat = document.getElementById('formChat'),
+                txtMessage = document.getElementById('txtMessage'),
+                listMessage = document.getElementById('listMessage'),
+                randomName ='Usuario_' + Math.ceil(Math.random() * 100);
+
+                formChat.addEventListener('submit',function (ev) {
+                    ev.preventDefault();
+
+                    socket.emit('message', randomName + '--> '+ txtMessage.value)
+                    txtMessage.value= '';
+                });
+
+                socket.on('message', function (msg) {
+                    var listItem = document.createElement('li');
+                    listItem.innerHTML = msg;
+                    listMessage.appendChild(listItem);
+                });
+
+
+        </script>
+    </body>
+</html>
